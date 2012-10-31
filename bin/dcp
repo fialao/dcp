@@ -7,8 +7,8 @@ class App < Thor
   namespace 'dcp'
 
   desc 'identify', 'Identify Profinet devices'
-  method_option :interface, aliases: '-i', type: 'string', default: Dcp::DEFAULT_INTERFACE, desc: 'Network interface'
-  method_option :timeout, aliases: '-t', type: 'numeric', default: Dcp::IDENTIFY_TIMEOUT, desc: 'Timeout'
+  method_option :interface, aliases: '-i', type: 'string',  default: Dcp::DEFAULT_INTERFACE,      desc: 'Network interface'
+  method_option :timeout,   aliases: '-t', type: 'numeric', default: Dcp::COMMUNICATION_TIMEOUT,  desc: 'Timeout'
   method_option :ip, type: 'string', desc: 'IP address with subnet mask (e.g. 192.168.0.1/24)'
   def identify()
     interface_ip = options[:ip] ? IpAddress.new(options[:ip]) : IpAddress.from_interface(options[:interface])
@@ -24,6 +24,18 @@ class App < Thor
       device_info = inaccessible(device_info) unless (device_ip === interface_ip)
       puts device_info
     end
+  end
+
+  desc 'set_ip DEVICE_MAC IP_ADDRESS[/SUBNET_MASK] [GATEWAY]', 'Sets device ip settings'
+  method_option :interface, aliases: '-i', type: 'string',  default: Dcp::DEFAULT_INTERFACE,      desc: 'Network interface'
+  method_option :timeout,   aliases: '-t', type: 'numeric', default: Dcp::COMMUNICATION_TIMEOUT,  desc: 'Timeout'
+  def set_ip(device_mac, ip_address_with_subnet, gateway = Dcp::DEFAULT_GATEWAY)
+    ip_address_with_subnet = ip_address_with_subnet.split('/')
+    ip_address  = ip_address_with_subnet[0]
+    subnet_mask = ip_address_with_subnet[1] ? ip_address_with_subnet[1].to_i : Dcp::DEFAULT_SUBNET_MASK
+
+    puts "Setting ip address to #{arg(ip_address)}/#{arg(subnet_mask)} for device #{arg(device_mac)}..."
+    puts Dcp.new(options[:interface]).set_ip(device_mac, ip_address, subnet_mask, gateway, options[:timeout]) ? done : failed
   end
 
 end

@@ -28,4 +28,12 @@ describe Numeric do
     end
   end
 
+  describe "#to_ip" do
+    it "should return string in ip address format" do
+      3232235521.to_ip.should == '192.168.0.1'
+      4294967040.to_ip.should == '255.255.255.0'
+      0.to_ip.should          == '0.0.0.0'
+    end
+  end
+
 end

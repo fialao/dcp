@@ -40,7 +40,7 @@ class IpAddress
   #
   # @return [FixNumber] ip address
   def to_i
-    @address.split('.').map(&:to_i).pack('C*').unpack('N').first
+    @address.to_b.unpack('N').first
   end
 
   # IP address family as ip address range (first..last ip address in accessible range).

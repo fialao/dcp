@@ -14,4 +14,11 @@ class String
     self.unpack('CCCC').join('.')
   end
 
+  # Convert IP address format (C.C.C.C) to byte string.
+  #
+  # @return [String] converted to byte string
+  def to_b
+    self.split('.').map(&:to_i).pack('C*')
+  end
+
 end

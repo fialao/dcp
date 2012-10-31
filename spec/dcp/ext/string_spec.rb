@@ -14,4 +14,12 @@ describe String do
     end
   end
 
+  describe "#to_b" do
+    it "should return string in ip address format as byte string" do
+      '192.168.0.1'.to_b.should   == "\xc0\xa8\x00\x01"
+      '255.255.255.0'.to_b.should == "\xff\xff\xff\x00"
+      '0.0.0.0'.to_b.should       == "\x00\x00\x00\x00"
+    end
+  end
+
 end

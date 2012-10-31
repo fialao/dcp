@@ -9,58 +9,73 @@ class Dcp
   # Default network interface.
   DEFAULT_INTERFACE = 'eth0'
 
-  ## --------------------------------------------------------------------------
-  ## IDENTIFY
-
-  # Profinet multicast MAC address for identify
-  IDENTIFY_MULTICAST_MAC = '01:0e:cf:00:00:00'
-
-  # Default identify timeout [s].
-  IDENTIFY_TIMEOUT = 3
-
-  # Block option
-  IDENTIFY_BLOCK_OPTION = { ip: "\x01", device: "\x02" }
-
-  # Device block suboption
-  IDENTIFY_DEVICE_BLOCK = { vendor: "\x01", name: "\x02" }
-
-  # IP block suboption
-  IDENTIFY_IP_BLOCK = { ip: "\x02" }
+  # Default communication timeout [s].
+  COMMUNICATION_TIMEOUT = 2
 
   ## --------------------------------------------------------------------------
-  ## PACKET PARAMETERS
+  ## PACKET HEADER PARAMETERS
 
-  # Frame Id
-  FRAME_ID = { identify_request: "\xfe\xfe", identify_response: "\xfe\xff" }
+  # Frame ID.
+  FRAME_ID = { identify_request: "\xfe\xfe", identify_response: "\xfe\xff", set: "\xfe\xfd" }
 
-  # Service Id
-  SERVICE_ID = { identify: "\x05" }
+  # Service ID.
+  SERVICE_ID = { set: "\x04", identify: "\x05" }
 
-  # Service Type
+  # Service type.
   SERVICE_TYPE = { request: "\x00", success_response: "\x00" }
 
-  # XId (transaction identification)
+  # XId (transaction identification).
   XID = "\x01\x00\x00\x01"
 
-  # Response Delay
+  # Response delay.
   RESPONSE_DELAY = "\x00\x01"
 
   ## --------------------------------------------------------------------------
   ## PACKET RANGES
-  
-  # Source MAC address range
+
+  # Source MAC address range.
   SOURCE_MAC_ADDRESS_RANGE = 6..11
 
-  # Frame Id range
+  # Frame ID range.
   FRAME_ID_RANGE = 14..15
 
-  # Identify response start
-  IDENTIFY_RESPONSE_START = 26
+  # First block start (skip header).
+  FIRST_BLOCK_START = 26
+
+  # Set response error.
+  SET_RESPONSE_ERROR = 6
 
   ## --------------------------------------------------------------------------
   ## PACKET BLOCKS
 
-  # All selector block
+  # Block option.
+  BLOCK_OPTION = { ip: "\x01", device: "\x02" }
+
+  # Device block suboption.
+  DEVICE_SUBOPTION = { vendor: "\x01", name: "\x02" }
+
+  # IP block suboption.
+  IP_SUBOPTION = { ip: "\x02" }
+
+  # All selector block.
   ALL_SELECTOR_BLOCK = "\xff\xff\x00\x00"
+
+  ## --------------------------------------------------------------------------
+  ## IDENTIFY
+
+  # Profinet multicast MAC address for identify.
+  IDENTIFY_MULTICAST_MAC = '01:0e:cf:00:00:00'
+
+  ## --------------------------------------------------------------------------
+  ## SET IP
+
+  # Determine change duration.
+  CHANGE_DURATION = { temporary: "\x00\x00", permanent: "\x00\x01"}
+
+  # Default subnet mask.
+  DEFAULT_SUBNET_MASK = 24
+
+  # Default gateway.
+  DEFAULT_GATEWAY = '0.0.0.0'
 
 end

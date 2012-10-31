@@ -4,6 +4,18 @@ def arg(argument)
   "#{cyan}#{argument}#{clr}"
 end
 
+# Add done message (green colored).
+def done
+  green = "\033[32m"
+  return "#{set_to_info}[ #{green}Done#{clr} ]"
+end
+
+# Add failed message (red colored).
+def failed
+  red = "\033[31m"
+  return "#{set_to_info}[ #{red}Failed#{clr} ]"
+end
+
 # Display inaccessible device (red colored).
 def inaccessible(device)
   red = "\033[31m"
@@ -14,6 +26,11 @@ end
 def conflict(device)
   light_red = "\033[41m"
   return "#{light_red}#{device}#{clr}"
+end
+
+# Add escape character for go one line up and set cursor to column 70.
+def set_to_info
+"\033[1A\033[70C"
 end
 
 # Add escape character for clear all attributes.

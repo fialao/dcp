@@ -56,7 +56,7 @@ describe Dcp do
         o.subnet_mask.should  == 24
         o.description.should  == 'INC'
       end
-      
+
       it "should return proper object, if gets correct frame (with subject values)" do
         frame = "
           \x00\x0c\x29\xba\x09\xea\xa1\xb2\xc3\xd4\xe5\xf6\x88\x92\xfe\xff
@@ -74,12 +74,11 @@ describe Dcp do
         o.subnet_mask.should  == subnet_mask
         o.description.should  == description
       end
-      
+
       it "should return nil, if gets incorrect frame" do
         frame = "\x00\x0c\x29\xba\x09\xea\xa1\xb2\xc3\xd4\xe5\xf6\x88\x92\xfe\xfe"
         described_class::IdentifyResponse.parse(frame).should be_nil
       end
-      
     end
   end
 

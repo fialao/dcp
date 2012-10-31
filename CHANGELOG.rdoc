@@ -1,3 +1,10 @@
-== 0.0.1, released 2012-10-31
+Visit {revision.io}[http://revision.io/06Nj90FuyfB4QFlGFTy-TiWcfbQ3mbcxLurv4O0j]
+
+0.0.2 (October 31, 2012)
+
+* Identify one specific device.
+* Set device ip settings.
+  
+0.0.1 (October 30, 2012)
 
 * Identify all devices.

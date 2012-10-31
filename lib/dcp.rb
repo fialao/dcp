@@ -39,12 +39,13 @@ class Dcp
 
   # Send DCP packet.
   #
+  # @param [String] destination_mac destination mac address
   # @param [String] payload ethernet packet payload
-  def send(payload)
+  def send(destination_mac, payload)
     packet           = PacketFu::EthPacket.new
     packet.iface     = @interface
     packet.eth_saddr = PacketFu::Utils.ifconfig(@interface)[:eth_saddr]
-    packet.eth_daddr = IDENTIFY_MULTICAST_MAC
+    packet.eth_daddr = destination_mac
     packet.eth_proto = DCP_ETHERTYPE
     packet.payload   = payload
     packet.to_w

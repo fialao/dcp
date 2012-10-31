@@ -31,7 +31,7 @@ describe Dcp do
       it "should wait desired timeout for identify responses" do
         timeout = 5
         subject.should_receive('sleep').with(timeout)
-        subject.instance_eval { capture(5) {} }    
+        subject.instance_eval { capture(5) {} }
       end
 
       it "should save and return response frames" do
@@ -49,11 +49,21 @@ describe Dcp do
         PacketFu::Utils.stub('ifconfig').and_return({})
       }
 
-      it "should send packet with desired payload" do
-        payload = 'payload'
+      it "should set desired mac address" do
+        destination_mac = 'a1:b2:c3:d4:e5:f6'
+        packet.should_receive('eth_daddr=').with(destination_mac)
+        subject.instance_eval { send destination_mac, '' }
+      end
+
+      it "should set desired payload" do
+        payload = '\x00\x00\x00\x00'
         packet.should_receive('payload=').with(payload)
+        subject.instance_eval { send '', payload }
+      end
+
+      it "should send packet" do
         packet.should_receive('to_w')
-        subject.instance_eval { send payload }
+        subject.instance_eval { send '', '' }
       end
     end
 
