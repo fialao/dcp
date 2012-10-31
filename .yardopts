@@ -1,0 +1,4 @@
+--title "DCP (Discovery and basic Configuration Protocol)"
+--no-private
+--default-return ''
+--exclude railtie --exclude generator

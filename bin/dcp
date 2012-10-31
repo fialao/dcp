@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+require 'thor'
+require File.join(File.dirname(__FILE__), 'output_helper')
+require File.join(File.dirname(__FILE__), '../lib/dcp')
+
+class App < Thor
+  namespace 'dcp'
+
+  desc 'identify', 'Identify Profinet devices'
+  method_option :interface, aliases: '-i', type: 'string', default: Dcp::DEFAULT_INTERFACE, desc: 'Network interface'
+  method_option :timeout, aliases: '-t', type: 'numeric', default: Dcp::IDENTIFY_TIMEOUT, desc: 'Timeout'
+  method_option :ip, type: 'string', desc: 'IP address with subnet mask (e.g. 192.168.0.1/24)'
+  def identify()
+    interface_ip = options[:ip] ? IpAddress.new(options[:ip]) : IpAddress.from_interface(options[:interface])
+    puts "Scanning interface #{arg(options[:interface])} (#{arg(interface_ip)}#{arg('*') if options[:ip]})..."
+    devices      = Dcp.new(options[:interface]).identify_all(options[:timeout])
+
+    puts "\n#{arg('num')} |    #{arg('mac address')}    | #{arg('ip_address/mask')} | #{arg('device name (description)')}"
+    devices.each_index do |i|
+      device      = devices[i]
+      device_ip   = IpAddress.new("#{device.ip_address}/#{device.subnet_mask}")
+      device_info = " ##{i} | #{device.mac_address} |  #{device.ip_address}/#{device.subnet_mask}  | #{device.name} (#{device.description}) "
+      device_info = conflict(device_info) if (device_ip.address == interface_ip.address)
+      device_info = inaccessible(device_info) unless (device_ip === interface_ip)
+      puts device_info
+    end
+  end
+
+end
+
+App.start
