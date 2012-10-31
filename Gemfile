@@ -8,3 +8,9 @@ group :development do
   gem 'ruby-debug19'
   gem 'pry'
 end
+
+# Test (Travis CI)
+group :test do
+  gem 'rake'
+  gem 'rspec'
+end

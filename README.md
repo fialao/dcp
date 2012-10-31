@@ -3,6 +3,13 @@
 A library for working with DCP. Allows Profinet device detection
 and setting its ip address.
 
+[![Build Status](https://secure.travis-ci.org/fialao/dcp.png)](http://travis-ci.org/fialao/dcp)
+
+
+## Changelog
+
+Visit [revision.io](http://revision.io/06Nj90FuyfB4QFlGFTy-TiWcfbQ3mbcxLurv4O0j).
+
 
 ## Installation
 

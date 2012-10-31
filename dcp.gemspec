@@ -15,13 +15,13 @@ Gem::Specification.new do |gem|
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ['lib']
-  
+
   # Gem dependencies
   gem.add_dependency 'thor'
   gem.add_dependency 'packetfu'
+  gem.add_dependency 'pcaprub'
 
   # Behaviour Driven Development and Testing
-  gem.add_development_dependency 'cucumber'
   gem.add_development_dependency 'rspec'
 
   # Documentation

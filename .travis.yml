@@ -1,0 +1,8 @@
+language: ruby
+bundler_args: --without development
+before_install: sudo apt-get install libpcap-dev
+script: bundle exec rake rspec
+rvm:
+  - 1.9.3
+  - 1.9.2
+  - rbx-19mode
