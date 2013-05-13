@@ -16,7 +16,9 @@ RSpec::Core::RakeTask.new(:spec) do |t|
   t.rspec_opts = '--format Fuubar'
   t.pattern    = 'spec/unit/**/*.spec.rb', 'spec/integration/**/*.spec.rb'
 end
-task :rspec => :spec
+RSpec::Core::RakeTask.new(:rspec) do |t|
+  t.pattern    = 'spec/**/*.spec.rb'
+end
 
 namespace :spec do
   desc "Run unit RSpecs"
