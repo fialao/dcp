@@ -8,7 +8,6 @@ group :development do
   gem 'pry'
   gem 'simplecov'
   gem 'json'
-  gem 'tailor'
 end
 
 # Guards
@@ -22,5 +21,6 @@ end
 group :test do
   gem 'rake'
   gem 'rspec'
+  gem 'tailor'
   gem 'coveralls'
 end
