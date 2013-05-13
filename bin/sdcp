@@ -1,5 +1,4 @@
 #!/bin/bash
-
 PW=$(dirname "${BASH_SOURCE[0]}")
 
 if which rvmsudo >/dev/null; then

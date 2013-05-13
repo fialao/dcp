@@ -9,33 +9,47 @@ class App < Thor
   desc 'identify', 'Identify Profinet devices'
   method_option :interface, aliases: '-i', type: 'string',  default: Dcp::DEFAULT_INTERFACE,      desc: 'Network interface'
   method_option :timeout,   aliases: '-t', type: 'numeric', default: Dcp::COMMUNICATION_TIMEOUT,  desc: 'Timeout'
-  method_option :ip, type: 'string', desc: 'IP address with subnet mask (e.g. 192.168.0.1/24)'
   def identify()
-    interface_ip = options[:ip] ? IpAddress.new(options[:ip]) : IpAddress.from_interface(options[:interface])
-    puts "Scanning interface #{arg(options[:interface])} (#{arg(interface_ip)}#{arg('*') if options[:ip]})..."
-    devices      = Dcp.new(options[:interface]).identify_all(options[:timeout])
+    puts "Scanning interface #{arg(options[:interface])}..."
+    responeses = Dcp.new(options[:interface], options[:timeout]).identify_all
 
-    puts "\n#{arg('num')} |    #{arg('mac address')}    | #{arg('ip_address/mask')} | #{arg('device name (description)')}"
-    devices.each_index do |i|
-      device      = devices[i]
-      device_ip   = IpAddress.new("#{device.ip_address}/#{device.subnet_mask}")
-      device_info = " ##{i} | #{device.mac_address} |  #{device.ip_address}/#{device.subnet_mask}  | #{device.name} (#{device.description}) "
-      device_info = conflict(device_info) if (device_ip.address == interface_ip.address)
-      device_info = inaccessible(device_info) unless (device_ip === interface_ip)
-      puts device_info
+    puts "\n   #{arg('MAC address')}    | #{arg('IP address')} | #{arg('subnet mask')} | #{arg('device name (type)')}"
+    responeses.each do |device_mac, response|
+      ip_block = response.block(:ip, :ip)
+      puts "#{device_mac} | #{ip_block.ip_address} | #{ip_block.subnet_mask} | #{response.block(:device, :name).name_of_station} (#{response.block(:device, :vendor).type_of_station})"
     end
   end
 
-  desc 'set_ip DEVICE_MAC IP_ADDRESS[/SUBNET_MASK] [GATEWAY]', 'Sets device ip settings'
+  desc 'set_ip DEVICE_MAC IP_ADDRESS [SUBNET_MASK] [GATEWAY]', 'Sets device ip settings'
   method_option :interface, aliases: '-i', type: 'string',  default: Dcp::DEFAULT_INTERFACE,      desc: 'Network interface'
   method_option :timeout,   aliases: '-t', type: 'numeric', default: Dcp::COMMUNICATION_TIMEOUT,  desc: 'Timeout'
-  def set_ip(device_mac, ip_address_with_subnet, gateway = Dcp::DEFAULT_GATEWAY)
-    ip_address_with_subnet = ip_address_with_subnet.split('/')
-    ip_address  = ip_address_with_subnet[0]
-    subnet_mask = ip_address_with_subnet[1] ? ip_address_with_subnet[1].to_i : Dcp::DEFAULT_SUBNET_MASK
+  def set_ip(device_mac, ip_address, subnet_mask = '255.255.255.0', gateway = '0.0.0.0')
+    puts "Setting ip address to #{arg(ip_address)} for device #{arg(device_mac)}..."
+    puts Dcp.new(options[:interface], options[:timeout]).set_ip(device_mac, ip_address, subnet_mask, gateway) == 'ok' ? done : failed
+  end
 
-    puts "Setting ip address to #{arg(ip_address)}/#{arg(subnet_mask)} for device #{arg(device_mac)}..."
-    puts Dcp.new(options[:interface]).set_ip(device_mac, ip_address, subnet_mask, gateway, options[:timeout]) ? done : failed
+  desc 'set_name DEVICE_MAC DEVICE_NAME', 'Sets device name'
+  method_option :interface, aliases: '-i', type: 'string',  default: Dcp::DEFAULT_INTERFACE,      desc: 'Network interface'
+  method_option :timeout,   aliases: '-t', type: 'numeric', default: Dcp::COMMUNICATION_TIMEOUT,  desc: 'Timeout'
+  def set_name(device_mac, device_name)
+    puts "Setting device name to #{arg(device_name)} for device #{arg(device_mac)}..."
+    puts Dcp.new(options[:interface], options[:timeout]).set_name(device_mac, device_name) == 'ok' ? done : failed
+  end
+
+  desc 'signal DEVICE_MAC', 'Physically detect device'
+  method_option :interface, aliases: '-i', type: 'string',  default: Dcp::DEFAULT_INTERFACE,      desc: 'Network interface'
+  method_option :timeout,   aliases: '-t', type: 'numeric', default: Dcp::COMMUNICATION_TIMEOUT,  desc: 'Timeout'
+  def signal(device_mac)
+    puts "Detecting device #{arg(device_mac)}..."
+    puts Dcp.new(options[:interface], options[:timeout]).signal(device_mac) == 'ok' ? done : failed
+  end
+
+  desc 'factory_reset DEVICE_MAC', 'Reset device to factory settings'
+  method_option :interface, aliases: '-i', type: 'string',  default: Dcp::DEFAULT_INTERFACE,      desc: 'Network interface'
+  method_option :timeout,   aliases: '-t', type: 'numeric', default: Dcp::COMMUNICATION_TIMEOUT,  desc: 'Timeout'
+  def factory_reset(device_mac)
+    puts "Reset device #{arg(device_mac)} to factory settings..."
+    puts Dcp.new(options[:interface], options[:timeout]).factory_reset(device_mac) == 'ok' ? done : failed
   end
 
 end

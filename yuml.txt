@@ -1,0 +1,19 @@
+// http://yuml.me/diagram/plain/class/draw
+
+[DCP|iterface;timeout|identify();identify_all();set_name();set_ip();signal();factory_reset()]
+
+[Frames::Common|service;type;xid;blocks|self.create_from();block();to_b();parse()]
+[Frames::Common]^-[Frames::IdentifyRequest||all()]
+[Frames::Common]^-[Frames::SetRequest||name();ip();signal();factory_reset()]
+[Frames::Common]^-[Frames::IdentifyResponse]
+[Frames::Common]^-[Frames::SetResponse]
+
+[Blocks::Common|option;suboption;block_info|self.create_from();to_b();parse()]
+[Blocks::Common]^-[Blocks::IpIp|ip_address;subnet_mask;standard_gateway|content();parse()]
+[Blocks::Common]^-[Blocks::DeviceName|name_of_station|content();parse()]
+[Blocks::Common]^-[Blocks::DeviceRole|roles|parse()]
+[Blocks::Common]^-[Blocks::DeviceVendor|type_of_station|parse()]
+[Blocks::Common]^-[Blocks::ControlResponse|response_option;response_suboption;response_error|parse()]
+[Blocks::Common]^-[Blocks::ControlSignal||content()]
+[Blocks::Common]^-[Blocks::ControlFactoryReset||content()]
+[Blocks::Common]^-[Blocks::AllAll]

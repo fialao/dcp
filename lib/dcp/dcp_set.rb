@@ -1,23 +1,25 @@
 class Dcp
 
-  # Set device ip settings.
+  # Set name of station for device.
   #
-  # @param [String] device_mac device MAC address
-  # @param [String] ip_address new ip address
-  # @param [String] subnet_mask new subnet mask as bit-length of the prefix
-  # @param [String] gateway new gateway
-  def set_ip(device_mac, ip_address, subnet_mask = DEFAULT_SUBNET_MASK, gateway = DEFAULT_GATEWAY, timeout = COMMUNICATION_TIMEOUT)
-    frame               = SetIpRequest
-    frame[:ip_address]  = ip_address.to_b
-    frame[:subnet_mask] = (((1 << subnet_mask) - 1) << (32 - subnet_mask)).to_ip.to_b
-    frame[:gateway]     = gateway.to_b
-    frames = capture(timeout) { send device_mac, frame.to_b }
+  # @param device_mac [String] device MAC address
+  # @param name_of_station [String] name of station
+  # @param change_duration [Symbol] change duration as `permanent` or `temporary`
+  # @return [String] operation result
+  def set_name(device_mac, name_of_station, change_duration = :permanent)
+    result_of device_mac, Frames::SetRequest.new.name(name_of_station, change_duration)
+  end
 
-    frames.each do |frame|
-      res = SetResponse.parse(frame)
-      return true if res.mac_address == device_mac && res.success
-    end
-    false
+  # Set ip parameters for device.
+  #
+  # @param device_mac [String] device MAC address
+  # @param ip_address [String] IP address
+  # @param subnet_mask [String] subnet mask
+  # @param standard_gateway [String] standard mask
+  # @param change_duration [Symbol] change duration as `permanent` or `temporary`
+  # @return [String] operation result
+  def set_ip(device_mac, ip_address, subnet_mask = '255.255.255.0', standard_gateway = '0.0.0.0', change_duration = :permanent)
+    result_of device_mac, Frames::SetRequest.new.ip(ip_address, subnet_mask, standard_gateway, change_duration)
   end
 
 end

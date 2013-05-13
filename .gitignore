@@ -1,5 +1,8 @@
+.bundle
+tmp/
 pkg/
 *.gem
-.bundle
 .yardoc/
 doc/
+coverage/
+.coveralls.yml

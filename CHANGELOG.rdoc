@@ -1,5 +1,13 @@
 Visit {revision.io}[http://revision.io/06Nj90FuyfB4QFlGFTy-TiWcfbQ3mbcxLurv4O0j]
 
+1.0.0 (May 2, 2013)
+
+* Set device name.
+* Physically detect device.
+* Reset device to factory settings.
+* Code coverage and coding style support.
+* Guard support.
+
 0.0.2 (October 31, 2012)
 
 * Identify one specific device.

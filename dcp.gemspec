@@ -17,12 +17,15 @@ Gem::Specification.new do |gem|
   gem.require_paths = ['lib']
 
   # Gem dependencies
-  gem.add_dependency 'thor'
   gem.add_dependency 'packetfu'
   gem.add_dependency 'pcaprub'
 
+  # CLI
+  gem.add_dependency 'thor'
+
   # Behaviour Driven Development and Testing
   gem.add_development_dependency 'rspec'
+  gem.add_development_dependency 'fuubar'
 
   # Documentation
   gem.add_development_dependency 'yard'  

@@ -1,0 +1,15 @@
+Tailor.config do |config|
+
+  # Ruby
+  config.file_set '{lib/**,spec,spec/support}/*.rb', :ruby do |style|
+    style.indentation_spaces 2, level: :off
+    style.max_line_length 140
+  end
+
+  # Rspec
+  config.file_set 'spec/**/*.spec.rb', :rspec do |style|
+    style.spaces_before_lbrace 0, level: :off
+    style.max_line_length 166
+  end
+
+end

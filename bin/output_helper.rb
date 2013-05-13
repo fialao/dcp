@@ -16,18 +16,6 @@ def failed
   return "#{set_to_info}[ #{red}Failed#{clr} ]"
 end
 
-# Display inaccessible device (red colored).
-def inaccessible(device)
-  red = "\033[31m"
-  return "#{red}#{device}#{clr}"
-end
-
-# Display inaccessible device (red colored).
-def conflict(device)
-  light_red = "\033[41m"
-  return "#{light_red}#{device}#{clr}"
-end
-
 # Add escape character for go one line up and set cursor to column 70.
 def set_to_info
 "\033[1A\033[70C"

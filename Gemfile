@@ -3,14 +3,24 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in dcp.gemspec
 gemspec
 
-# Debugging
+# Debugging, metrics
 group :development do
-  gem 'ruby-debug19'
   gem 'pry'
+  gem 'simplecov'
+  gem 'json'
+  gem 'tailor'
+end
+
+# Guards
+group :guard do
+  gem 'guard-rspec'
+  gem 'guard-yard'
+  gem 'guard-shell'
 end
 
 # Test (Travis CI)
 group :test do
   gem 'rake'
   gem 'rspec'
+  gem 'coveralls'
 end

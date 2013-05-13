@@ -1,33 +1,22 @@
 class Dcp
 
+  # Profinet multicast MAC address for identify.
+  IDENTIFY_MULTICAST_MAC = '01:0e:cf:00:00:00'
+
+
   # Identify all connected devices.
   #
-  # @param [Fixnum] timeout identify timeout
-  # @return [Hash] devices as device info hashes
-  def identify_all(timeout = COMMUNICATION_TIMEOUT)
-    frames = capture(timeout) { send IDENTIFY_MULTICAST_MAC, IdentifyAllRequest.to_b }
-
-    devices = []
-    frames.each do |frame|
-      device = IdentifyResponse.parse(frame)
-      devices.push device unless device.nil?
-    end
-    devices
+  # @return [Hash<mac_address, identify_response>] hash of identify responses
+  def identify_all
+    responses_to IDENTIFY_MULTICAST_MAC, Frames::IdentifyRequest.new.all
   end
 
   # Identify one device.
   #
-  # @param [String] device_mac device MAC address
-  # @param [Fixnum] timeout identify timeout
-  # @return [Hash] device info
-  def identify(device_mac, timeout = COMMUNICATION_TIMEOUT)
-    frames = capture(timeout) { send device_mac, IdentifyAllRequest.to_b }
-
-    device = nil
-    frames.each do |frame|
-      d = IdentifyResponse.parse(frame)
-      device = d if d && d.mac_address == device_mac
-    end
-    device
+  # @param device_mac [String] device MAC address
+  # @return [Hash<mac_address, identify_response>] hash of identify responses
+  def identify(device_mac)
+    responses_to device_mac, Frames::IdentifyRequest.new.all
   end
+
 end

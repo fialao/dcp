@@ -1,7 +1,11 @@
-= DCP (Discovery and basic Configuration Protocol) {<img src="https://secure.travis-ci.org/fialao/dcp.png" alt="Build Status" />}[http://travis-ci.org/fialao/dcp]
+= DCP (Discovery and basic Configuration Protocol) 
+{<img src="https://secure.travis-ci.org/fialao/dcp.png" alt="Build Status" />}[http://travis-ci.org/fialao/dcp]
+{<img src="https://gemnasium.com/fialao/dcp.png" alt="Dependency Status" />}[https://gemnasium.com/fialao/dcp]
+{<img src="https://codeclimate.com/github/fialao/dcp.png" alt="Code Climate" />}[https://codeclimate.com/github/fialao/dcp]
+{<img src="https://coveralls.io/repos/fialao/dcp/badge.png" alt="Coverage Status" />}[https://coveralls.io/r/fialao/dcp]
 
 A library for working with DCP. Allows Profinet device detection
-and setting its ip address.
+and setting its ip address and name.
 
 
 == Changelog
